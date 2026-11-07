@@ -214,8 +214,8 @@ export default function App() {
             const ratio = Math.max(0, Math.min(1, totalHeight > 0 ? current / totalHeight : 0));
             newProgress[era.id] = ratio;
 
-            // Ativa o Canvas 3D somente quando a seção está dentro ou bem próxima da viewport (evita 4 WebGL contexts rodando simultaneamente)
-            const isNearViewport = rect.top < vh * 1.35 && rect.bottom > -vh * 0.35;
+            // Ativa o Canvas 3D somente quando a seção está centralizada ou dentro da tela
+            const isNearViewport = rect.top < vh * 0.95 && rect.bottom > 0.05 * vh;
             newVisible[era.id] = isNearViewport;
 
             // Calcula o estado de entrada (-1 -> 0) e saída (0 -> +1) entre um personagem e outro
@@ -424,66 +424,91 @@ export default function App() {
         ref={(el) => {
           if (el) sectionRefs.current['sintese'] = el;
         }}
-        className="w-full max-w-6xl mx-auto px-6 sm:px-12 py-32 border-t border-[#F5F2EB]/15"
+        className="w-full max-w-7xl mx-auto px-6 sm:px-12 py-32 border-t border-[#F5F2EB]/15"
       >
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.25 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-3xl mb-20"
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.7 }}
+          className="max-w-4xl mb-16 text-center sm:text-left"
         >
-          <span className="text-xs font-extrabold tracking-[0.25em] uppercase text-[#D97706]">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#D97706]/15 border border-[#D97706]/35 text-[#D97706] text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            <span className="w-2 h-2 rounded-full bg-[#D97706] animate-pulse" />
             DIAGNÓSTICO ESTRUTURAL • SÉCULO XXI
-          </span>
-          <h2 className="text-4xl sm:text-6xl font-black font-serif text-[#F5F2EB] mt-3 leading-[1.1]">
-            Por que a maioria ainda está na pobreza mesmo com Cotas e Auxílios?
+          </div>
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black font-serif text-[#F5F2EB] leading-[1.15] tracking-tight">
+            Por que a maioria ainda está na pobreza mesmo com <span className="text-[#D97706]">Cotas e Auxílios</span>?
           </h2>
-          <p className="text-lg sm:text-xl text-[#F5F2EB]/80 mt-6 leading-relaxed">
+          <p className="text-base sm:text-lg text-[#F5F2EB]/80 mt-6 leading-relaxed max-w-3xl">
             A trajetória de <strong>Sebastião, Benedita, Manuel e Camila</strong> revela que a pobreza contemporânea não é fruto de falta de esforço individual, mas de uma matemática patrimonial acumulada por quatro séculos.
           </p>
         </motion.div>
 
-        {/* Comparativo Visual de Barras de Patrimônio Geracional (Estilo Infográfico Jornalístico) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-          <div className="p-8 sm:p-10 rounded-3xl bg-[#F5F2EB]/5 border border-[#F5F2EB]/15">
-            <h3 className="text-xl font-bold font-serif text-[#D97706] mb-6">
-              1. A Matemática da Herança Zero
-            </h3>
-            <p className="text-base text-[#F5F2EB]/85 leading-relaxed mb-6">
-              As <strong>Cotas Universitárias</strong> garantem o ingresso no ensino superior e os <strong>Auxílios Públicos</strong> evitam a fome imediata. Porém, nenhum dos dois transfere propriedade imobiliária ou capital inicial.
-            </p>
-            <div className="space-y-4 pt-4 border-t border-[#F5F2EB]/10 text-sm">
-              <div>
-                <div className="flex justify-between mb-1 font-semibold">
-                  <span>Famílias com Herança desde 1850 (Terras + Imóveis)</span>
-                  <span className="text-[#D97706]">Acúmulo Composto (4 Gerações)</span>
-                </div>
-                <div className="w-full h-3 bg-[#F5F2EB]/10 rounded-full overflow-hidden">
-                  <div className="w-full h-full bg-[#D97706]" />
-                </div>
+        {/* Comparativo Visual de Barras de Patrimônio Geracional (Estilo Infográfico Editorial Moderno) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-16">
+          {/* Card 1: Herança Zero */}
+          <div className="flex flex-col justify-between p-8 sm:p-10 rounded-3xl bg-[#12131A] border border-[#F5F2EB]/10 shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:border-[#D97706]/40 transition-all duration-300">
+            <div>
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <span className="text-xs font-mono font-bold tracking-widest text-[#D97706] uppercase">Mecanismo 01</span>
+                <span className="text-[11px] px-2.5 py-1 rounded-full bg-[#F5F2EB]/10 text-[#F5F2EB]/70 font-mono">1850 - 2026</span>
               </div>
+              <h3 className="text-2xl font-bold font-serif text-[#F5F2EB] mb-4">
+                1. A Matemática da Herança Zero
+              </h3>
+              <p className="text-sm sm:text-base text-[#F5F2EB]/75 leading-relaxed mb-8">
+                As <strong>Cotas Universitárias</strong> garantem o ingresso no ensino superior e os <strong>Auxílios Públicos</strong> evitam a fome imediata. Porém, nenhum dos dois transfere propriedade imobiliária, terra ou capital inicial acumulado.
+              </p>
+            </div>
+
+            <div className="space-y-6 pt-6 border-t border-[#F5F2EB]/10">
               <div>
-                <div className="flex justify-between mb-1 font-semibold">
-                  <span>Linhagem de Camila (Primeira Geração com Diploma)</span>
-                  <span className="text-[#F5F2EB]/70">Patrimônio Inicial: 0%</span>
+                <div className="flex justify-between items-baseline mb-2 text-xs sm:text-sm font-semibold">
+                  <span className="text-[#F5F2EB]">Famílias com Herança desde 1850</span>
+                  <span className="text-[#D97706] font-mono font-bold">100% Acúmulo</span>
                 </div>
-                <div className="w-full h-3 bg-[#F5F2EB]/10 rounded-full overflow-hidden">
-                  <div className="w-[14%] h-full bg-[#8E1010]" />
+                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
+                  <div className="w-full h-full bg-gradient-to-r from-amber-600 to-[#D97706] rounded-full" />
                 </div>
+                <p className="text-[11px] text-[#F5F2EB]/50 mt-1.5 font-mono">Terras, imóveis alugados e capital gerando juros por 4 gerações.</p>
+              </div>
+
+              <div>
+                <div className="flex justify-between items-baseline mb-2 text-xs sm:text-sm font-semibold">
+                  <span className="text-[#F5F2EB]">Linhagem de Camila (1ª Geração c/ Diploma)</span>
+                  <span className="text-[#E11D48] font-mono font-bold">0% Patrimônio</span>
+                </div>
+                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
+                  <div className="w-[12%] h-full bg-[#E11D48] rounded-full" />
+                </div>
+                <p className="text-[11px] text-[#F5F2EB]/50 mt-1.5 font-mono">Ponto de partida do zero: salário usado para pagar moradia e dívidas.</p>
               </div>
             </div>
           </div>
 
-          <div className="p-8 sm:p-10 rounded-3xl bg-[#F5F2EB]/5 border border-[#F5F2EB]/15">
-            <h3 className="text-xl font-bold font-serif text-[#D97706] mb-6">
-              2. O Dreno do Aluguel e a Desigualdade Salarial
-            </h3>
-            <p className="text-base text-[#F5F2EB]/85 leading-relaxed mb-6">
-              Expulsos do centro nas reformas urbanas do pós-abolição, os descendentes de Manuel gastam até metade do salário apenas com moradia e transporte. Além disso, no setor privado, <strong>formados negros recebem 34% a menos</strong> que formados brancos na mesma função.
-            </p>
-            <div className="p-5 rounded-2xl bg-[#8E1010]/30 border border-[#8E1010] text-sm leading-relaxed">
-              <strong>Síntese:</strong> O auxílio público alimenta o presente e a cota abre a universidade, mas sem reforma urbana, crédito patrimonial e equiparação salarial, o ponto de partida continua desigual.
+          {/* Card 2: Dreno do Aluguel & Desigualdade */}
+          <div className="flex flex-col justify-between p-8 sm:p-10 rounded-3xl bg-[#12131A] border border-[#F5F2EB]/10 shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:border-[#D97706]/40 transition-all duration-300">
+            <div>
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <span className="text-xs font-mono font-bold tracking-widest text-[#D97706] uppercase">Mecanismo 02</span>
+                <span className="text-[11px] px-2.5 py-1 rounded-full bg-[#E11D48]/20 text-[#FDA4AF] font-mono font-bold">-34% Salário</span>
+              </div>
+              <h3 className="text-2xl font-bold font-serif text-[#F5F2EB] mb-4">
+                2. O Dreno do Aluguel e a Desigualdade Salarial
+              </h3>
+              <p className="text-sm sm:text-base text-[#F5F2EB]/75 leading-relaxed mb-6">
+                Expulsos dos centros urbanos no pós-abolição, os descendentes de Manuel gastam até metade da renda bruta apenas com aluguel e transporte periférico. Além disso, mesmo com diploma superior, <strong>profissionais negros recebem em média 34% a menos</strong> exercendo o mesmo cargo (IBGE).
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#8E1010]/30 to-[#141838]/40 border border-[#8E1010]/60 mt-auto">
+              <div className="text-xs font-black tracking-widest uppercase text-[#FDA4AF] mb-2 font-mono">
+                Conclusão Estrutural
+              </div>
+              <p className="text-xs sm:text-sm text-[#F5F2EB]/90 leading-relaxed">
+                O auxílio público alimenta o presente e a cota abre as portas da faculdade. Porém, sem <strong>reforma urbana, crédito para patrimônio próprio e equiparação salarial</strong>, a linha de chegada continuará a quilômetros de distância.
+              </p>
             </div>
           </div>
         </div>

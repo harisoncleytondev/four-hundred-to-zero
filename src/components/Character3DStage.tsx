@@ -107,8 +107,7 @@ export function Character3DStage({
       <div className="relative z-10 w-full h-full">
         {isActive ? (
           <Canvas
-            shadows
-            dpr={[1, 1.5]}
+            dpr={[1, 1.25]}
             frameloop="always"
             camera={{ position: [0, 0.12, 4.35], fov: 38 }}
             gl={{
@@ -121,17 +120,9 @@ export function Character3DStage({
           >
             <ScrollCameraDirector scrollProgress={scrollProgress} isLeft={isLeft} />
 
-            {/* Iluminação Cinematográfica Otimizada */}
-            <hemisphereLight args={['#FFF7ED', '#1C130E', 0.62]} />
-            <directionalLight
-              position={[2.8, 4.2, 4.0]}
-              intensity={2.85}
-              color="#FFFBEB"
-              castShadow
-              shadow-mapSize={[512, 512]}
-              shadow-bias={-0.0005}
-              shadow-normalBias={0.04}
-            />
+            {/* Iluminação Cinematográfica Direta (Sem Shadow Map pesado de GPU) */}
+            <hemisphereLight args={['#FFF7ED', '#1C130E', 0.65]} />
+            <directionalLight position={[2.8, 4.2, 4.0]} intensity={2.85} color="#FFFBEB" />
             <directionalLight position={[-3.2, 2.2, 2.2]} intensity={1.15} color="#FED7AA" />
             <pointLight position={[0.2, 0.95, 2.6]} intensity={1.25} color="#FFF7ED" />
             {/* Rim Light */}
@@ -146,11 +137,11 @@ export function Character3DStage({
               />
               <ContactShadows
                 position={[0, -1.24, 0]}
-                opacity={0.78}
-                scale={4.5}
-                blur={1.6}
-                far={2.5}
-                resolution={256}
+                opacity={0.65}
+                scale={4.0}
+                blur={2.0}
+                far={2.0}
+                resolution={128}
               />
             </Suspense>
           </Canvas>

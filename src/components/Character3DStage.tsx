@@ -65,6 +65,7 @@ export interface Character3DStageProps {
   transitionOffset?: number;
   isLeft?: boolean;
   haloColor: string;
+  isActive?: boolean;
 }
 
 export function Character3DStage({
@@ -73,6 +74,7 @@ export function Character3DStage({
   transitionOffset = 0,
   isLeft = true,
   haloColor,
+  isActive = false,
 }: Character3DStageProps) {
   // Pulsação e rotação do anel editorial conforme o zoom no personagem
   const activeZoom =
@@ -103,53 +105,60 @@ export function Character3DStage({
 
       {/* Canvas 3D Carregando o Personagem com Otimização Mobile (dpr controlado, sombras balanceadas) */}
       <div className="relative z-10 w-full h-full">
-        <Canvas
-          shadows
-          dpr={[1, 1.75]}
-          camera={{ position: [0, 0.12, 4.35], fov: 38 }}
-          gl={{
-            antialias: true,
-            alpha: true,
-            powerPreference: 'high-performance',
-            toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 1.08,
-          }}
-        >
-          <ScrollCameraDirector scrollProgress={scrollProgress} isLeft={isLeft} />
+        {isActive ? (
+          <Canvas
+            shadows
+            dpr={[1, 1.5]}
+            frameloop="always"
+            camera={{ position: [0, 0.12, 4.35], fov: 38 }}
+            gl={{
+              antialias: true,
+              alpha: true,
+              powerPreference: 'high-performance',
+              toneMapping: THREE.ACESFilmicToneMapping,
+              toneMappingExposure: 1.08,
+            }}
+          >
+            <ScrollCameraDirector scrollProgress={scrollProgress} isLeft={isLeft} />
 
-          {/* Iluminação Cinematográfica */}
-          <hemisphereLight args={['#FFF7ED', '#1C130E', 0.62]} />
-          <directionalLight
-            position={[2.8, 4.2, 4.0]}
-            intensity={2.85}
-            color="#FFFBEB"
-            castShadow
-            shadow-mapSize={[1024, 1024]}
-            shadow-bias={-0.0005}
-            shadow-normalBias={0.04}
-          />
-          <directionalLight position={[-3.2, 2.2, 2.2]} intensity={1.15} color="#FED7AA" />
-          <pointLight position={[0.2, 0.95, 2.6]} intensity={1.25} color="#FFF7ED" />
-          {/* Rim Light */}
-          <directionalLight position={[0, 3.4, -3.2]} intensity={2.2} color="#FDE68A" />
+            {/* Iluminação Cinematográfica Otimizada */}
+            <hemisphereLight args={['#FFF7ED', '#1C130E', 0.62]} />
+            <directionalLight
+              position={[2.8, 4.2, 4.0]}
+              intensity={2.85}
+              color="#FFFBEB"
+              castShadow
+              shadow-mapSize={[512, 512]}
+              shadow-bias={-0.0005}
+              shadow-normalBias={0.04}
+            />
+            <directionalLight position={[-3.2, 2.2, 2.2]} intensity={1.15} color="#FED7AA" />
+            <pointLight position={[0.2, 0.95, 2.6]} intensity={1.25} color="#FFF7ED" />
+            {/* Rim Light */}
+            <directionalLight position={[0, 3.4, -3.2]} intensity={2.2} color="#FDE68A" />
 
-          <Suspense fallback={null}>
-            <Character3DModel
-              characterId={characterId}
-              scrollProgress={scrollProgress}
-              transitionOffset={transitionOffset}
-              isLeft={isLeft}
-            />
-            <ContactShadows
-              position={[0, -1.24, 0]}
-              opacity={0.78}
-              scale={4.5}
-              blur={1.6}
-              far={2.5}
-              resolution={512}
-            />
-          </Suspense>
-        </Canvas>
+            <Suspense fallback={null}>
+              <Character3DModel
+                characterId={characterId}
+                scrollProgress={scrollProgress}
+                transitionOffset={transitionOffset}
+                isLeft={isLeft}
+              />
+              <ContactShadows
+                position={[0, -1.24, 0]}
+                opacity={0.78}
+                scale={4.5}
+                blur={1.6}
+                far={2.5}
+                resolution={256}
+              />
+            </Suspense>
+          </Canvas>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center opacity-40">
+            <div className="w-16 h-16 rounded-full border border-dashed border-white/20 animate-pulse" />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -24,14 +24,14 @@ function getProceduralMicroTextures(): MicroTextures {
   if (cachedMicroTextures) return cachedMicroTextures;
 
   const skinCanvas = document.createElement('canvas');
-  skinCanvas.width = 256;
-  skinCanvas.height = 256;
+  skinCanvas.width = 64;
+  skinCanvas.height = 64;
   const sCtx = skinCanvas.getContext('2d');
   if (sCtx) {
-    const sImg = sCtx.createImageData(256, 256);
-    for (let y = 0; y < 256; y++) {
-      for (let x = 0; x < 256; x++) {
-        const i = (y * 256 + x) * 4;
+    const sImg = sCtx.createImageData(64, 64);
+    for (let y = 0; y < 64; y++) {
+      for (let x = 0; x < 64; x++) {
+        const i = (y * 64 + x) * 4;
         const n1 = Math.sin(x * 0.45) * Math.cos(y * 0.45);
         const n2 = Math.sin((x + y) * 0.85) * Math.sin((x - y) * 0.85);
         const hash = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
@@ -48,17 +48,17 @@ function getProceduralMicroTextures(): MicroTextures {
   const skinBump = new THREE.CanvasTexture(skinCanvas);
   skinBump.wrapS = THREE.RepeatWrapping;
   skinBump.wrapT = THREE.RepeatWrapping;
-  skinBump.repeat.set(14, 14);
+  skinBump.repeat.set(8, 8);
 
   const clothCanvas = document.createElement('canvas');
-  clothCanvas.width = 256;
-  clothCanvas.height = 256;
+  clothCanvas.width = 64;
+  clothCanvas.height = 64;
   const cCtx = clothCanvas.getContext('2d');
   if (cCtx) {
-    const cImg = cCtx.createImageData(256, 256);
-    for (let y = 0; y < 256; y++) {
-      for (let x = 0; x < 256; x++) {
-        const i = (y * 256 + x) * 4;
+    const cImg = cCtx.createImageData(64, 64);
+    for (let y = 0; y < 64; y++) {
+      for (let x = 0; x < 64; x++) {
+        const i = (y * 64 + x) * 4;
         const warp = Math.sin(x * 1.5708);
         const weft = Math.sin(y * 1.5708);
         const weave = (warp * weft) * 0.5 + Math.sin(x * 0.25 + y * 0.25) * 0.25;
@@ -74,17 +74,17 @@ function getProceduralMicroTextures(): MicroTextures {
   const clothWeave = new THREE.CanvasTexture(clothCanvas);
   clothWeave.wrapS = THREE.RepeatWrapping;
   clothWeave.wrapT = THREE.RepeatWrapping;
-  clothWeave.repeat.set(18, 18);
+  clothWeave.repeat.set(10, 10);
 
   const coarseCanvas = document.createElement('canvas');
-  coarseCanvas.width = 256;
-  coarseCanvas.height = 256;
+  coarseCanvas.width = 64;
+  coarseCanvas.height = 64;
   const rCtx = coarseCanvas.getContext('2d');
   if (rCtx) {
-    const rImg = rCtx.createImageData(256, 256);
-    for (let y = 0; y < 256; y++) {
-      for (let x = 0; x < 256; x++) {
-        const i = (y * 256 + x) * 4;
+    const rImg = rCtx.createImageData(64, 64);
+    for (let y = 0; y < 64; y++) {
+      for (let x = 0; x < 64; x++) {
+        const i = (y * 64 + x) * 4;
         const bx = Math.sin(x * 0.785) * Math.cos(y * 0.392);
         const by = Math.cos(y * 0.785) * Math.sin(x * 0.392);
         const val = Math.floor(128 + (bx + by) * 60);
@@ -99,7 +99,7 @@ function getProceduralMicroTextures(): MicroTextures {
   const coarseWeave = new THREE.CanvasTexture(coarseCanvas);
   coarseWeave.wrapS = THREE.RepeatWrapping;
   coarseWeave.wrapT = THREE.RepeatWrapping;
-  coarseWeave.repeat.set(12, 12);
+  coarseWeave.repeat.set(8, 8);
 
   cachedMicroTextures = { skinBump, clothWeave, coarseWeave };
   return cachedMicroTextures;

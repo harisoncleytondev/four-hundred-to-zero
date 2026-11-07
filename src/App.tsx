@@ -183,6 +183,13 @@ export default function App() {
     camila: -1,
   });
 
+  const [visibleEras, setVisibleEras] = useState<Record<string, boolean>>({
+    tiao: true,
+    benedita: false,
+    manuel: false,
+    camila: false,
+  });
+
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   // Monitoramento nativo de Scroll Vertical para trocar as cores de fundo, animar transições e rotacionar os personagens 3D
@@ -196,6 +203,7 @@ export default function App() {
         const vh = window.innerHeight;
         const newProgress: Record<string, number> = {};
         const newTransition: Record<string, number> = {};
+        const newVisible: Record<string, boolean> = {};
 
         eras.forEach((era) => {
           const el = sectionRefs.current[era.id];
@@ -205,6 +213,10 @@ export default function App() {
             const current = -rect.top;
             const ratio = Math.max(0, Math.min(1, totalHeight > 0 ? current / totalHeight : 0));
             newProgress[era.id] = ratio;
+
+            // Ativa o Canvas 3D somente quando a seção está dentro ou bem próxima da viewport (evita 4 WebGL contexts rodando simultaneamente)
+            const isNearViewport = rect.top < vh * 1.35 && rect.bottom > -vh * 0.35;
+            newVisible[era.id] = isNearViewport;
 
             // Calcula o estado de entrada (-1 -> 0) e saída (0 -> +1) entre um personagem e outro
             if (rect.top > 0) {
@@ -233,6 +245,7 @@ export default function App() {
 
         setEraProgress((prev) => ({ ...prev, ...newProgress }));
         setEraTransition((prev) => ({ ...prev, ...newTransition }));
+        setVisibleEras((prev) => ({ ...prev, ...newVisible }));
         ticking = false;
       });
     };
@@ -290,6 +303,7 @@ export default function App() {
                     transitionOffset={trans}
                     isLeft={era.isLeft}
                     haloColor={era.haloHex}
+                    isActive={visibleEras[era.id] ?? false}
                   />
                 </div>
 

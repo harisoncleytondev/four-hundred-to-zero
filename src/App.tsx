@@ -420,116 +420,108 @@ export default function App() {
         );
       })}
 
-      {/* ==================== SEÇÃO FINAL DE SÍNTESE INFOGRÁFICA (ESTILO SCMP EDITORIAL) ==================== */}
+      {/* ==================== SEÇÃO FINAL DE SÍNTESE INFOGRÁFICA (VISUAL & DIRETA AO PONTO) ==================== */}
       <section
         ref={(el) => {
           if (el) sectionRefs.current['sintese'] = el;
         }}
-        className="w-full max-w-7xl mx-auto px-6 sm:px-12 py-32 border-t border-[#F5F2EB]/15"
+        className="w-full max-w-7xl mx-auto px-6 sm:px-12 py-28 border-t border-[#F5F2EB]/15"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* LADO ESQUERDO: TÍTULO, SUBTÍTULO E NARRATIVA EDITORIAL */}
+          {/* LADO ESQUERDO: PERGUNTA CHAVE E IMPACTO DIRETO */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.7 }}
-            className="lg:col-span-5 lg:sticky lg:top-32 space-y-6"
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5 space-y-6"
           >
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#D97706]/15 border border-[#D97706]/35 text-[#D97706] text-xs font-bold tracking-[0.2em] uppercase">
-              <span className="w-2 h-2 rounded-full bg-[#D97706] animate-pulse" />
-              DIAGNÓSTICO ESTRUTURAL • SÉCULO XXI
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D97706]/15 border border-[#D97706]/35 text-[#D97706] text-[11px] font-bold tracking-[0.2em] uppercase font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D97706] animate-pulse" />
+              DIAGNÓSTICO FINAL
             </div>
 
-            <h2 className="text-3xl sm:text-5xl lg:text-5xl font-black font-serif text-[#F5F2EB] leading-[1.12] tracking-tight">
+            <h2 className="text-3xl sm:text-5xl font-black font-serif text-[#F5F2EB] leading-[1.12] tracking-tight">
               Por que a maioria ainda está na pobreza mesmo com <span className="text-[#D97706]">Cotas e Auxílios</span>?
             </h2>
 
-            <p className="text-base sm:text-lg text-[#F5F2EB]/80 leading-relaxed">
-              A trajetória de <strong>Sebastião, Benedita, Manuel e Camila</strong> revela que a pobreza contemporânea não é fruto de falta de esforço individual, mas de uma matemática patrimonial acumulada por quatro séculos.
+            <p className="text-base sm:text-lg text-[#F5F2EB]/75 leading-relaxed font-serif">
+              Cotas abrem portas e auxílios matam a fome, mas nenhum deles transfere <strong>4 séculos de terra, imóveis e herança financeira</strong>.
             </p>
-
-            <div className="pt-4 border-l-2 border-[#D97706]/60 pl-5 text-sm text-[#F5F2EB]/70 leading-relaxed font-serif italic">
-              "A liberdade formal sem bens materiais transferiu o custo de sobrevivência integralmente para as costas dos libertos e de suas próximas quatro gerações."
-            </div>
           </motion.div>
 
-          {/* LADO DIREITO: DADOS, TÓPICOS 1 E 2 E INFOGRÁFICO DE BARRAS */}
+          {/* LADO DIREITO: DADOS EM GRANDE DESTAQUE VISUAL (RÁPIDO DE BATER O OLHO) */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.7 }}
-            className="lg:col-span-7 space-y-16"
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 space-y-12"
           >
-            {/* TÓPICO 1: A MATEMÁTICA DA HERANÇA ZERO */}
-            <div className="space-y-6 border-b border-[#F5F2EB]/10 pb-12">
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-bold tracking-widest text-[#D97706] uppercase">01 / MECANISMO PATRIMONIAL</span>
-                <span className="h-px flex-1 bg-[#F5F2EB]/15" />
+            {/* DADO 1: O ABISMO DO PATRIMÔNIO INICIAL */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-baseline">
+                <span className="text-xs font-mono font-bold tracking-widest text-[#D97706] uppercase">
+                  01. Herança e Patrimônio
+                </span>
+                <span className="text-xs font-mono text-[#F5F2EB]/50">4 Gerações Acumuladas</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold font-serif text-[#F5F2EB]">
-                1. A Matemática da Herança Zero
-              </h3>
-
-              <p className="text-base text-[#F5F2EB]/80 leading-relaxed">
-                As <strong>Cotas Universitárias</strong> garantem o ingresso no ensino superior e os <strong>Auxílios Públicos</strong> evitam a fome imediata. Porém, nenhum dos dois transfere propriedade imobiliária, terra ou capital inicial acumulado.
-              </p>
-
-              {/* Infográfico de Acúmulo de Gerações */}
-              <div className="space-y-5 pt-4">
-                <div>
-                  <div className="flex justify-between items-baseline mb-2 text-sm font-semibold">
-                    <span className="text-[#F5F2EB]">Famílias com Herança desde 1850 (Terras + Imóveis)</span>
-                    <span className="text-[#D97706] font-mono font-bold">100% Acúmulo Composto</span>
-                  </div>
-                  <div className="w-full h-3.5 bg-white/10 rounded-full overflow-hidden p-0.5">
-                    <div className="w-full h-full bg-gradient-to-r from-amber-600 to-[#D97706] rounded-full" />
-                  </div>
-                  <p className="text-xs text-[#F5F2EB]/50 mt-1 font-mono">Terras agrícolas, imóveis alugados e juros bancários acumulados por 4 gerações.</p>
+              {/* Barra Famílias com Herança */}
+              <div>
+                <div className="flex justify-between text-sm font-semibold mb-1.5">
+                  <span className="text-[#F5F2EB]">Famílias com Herança desde 1850</span>
+                  <span className="text-[#D97706] font-mono font-bold">100% Acúmulo</span>
                 </div>
+                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
+                  <div className="w-full h-full bg-gradient-to-r from-amber-600 to-[#D97706] rounded-full" />
+                </div>
+              </div>
 
-                <div>
-                  <div className="flex justify-between items-baseline mb-2 text-sm font-semibold">
-                    <span className="text-[#F5F2EB]">Linhagem de Camila (Primeira Geração com Diploma)</span>
-                    <span className="text-[#E11D48] font-mono font-bold">0% Patrimônio Herdado</span>
-                  </div>
-                  <div className="w-full h-3.5 bg-white/10 rounded-full overflow-hidden p-0.5">
-                    <div className="w-[12%] h-full bg-[#E11D48] rounded-full" />
-                  </div>
-                  <p className="text-xs text-[#F5F2EB]/50 mt-1 font-mono">Ponto de partida do zero: 100% do salário vai para moradia, transporte e subsistência.</p>
+              {/* Barra Camila */}
+              <div>
+                <div className="flex justify-between text-sm font-semibold mb-1.5">
+                  <span className="text-[#F5F2EB]">Linhagem de Camila (1ª com Diploma)</span>
+                  <span className="text-[#E11D48] font-mono font-bold">0% Patrimônio</span>
+                </div>
+                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
+                  <div className="w-[8%] h-full bg-[#E11D48] rounded-full" />
                 </div>
               </div>
             </div>
 
-            {/* TÓPICO 2: O DRENO DO ALUGUEL E DESIGUALDADE SALARIAL */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-bold tracking-widest text-[#D97706] uppercase">02 / BARREIRA SALARIAL E URBANA</span>
-                <span className="h-px flex-1 bg-[#F5F2EB]/15" />
+            {/* DADO 2: ESTATÍSTICAS DIRETAS E IMPACTANTES */}
+            <div className="grid grid-cols-2 gap-8 pt-6 border-t border-[#F5F2EB]/15">
+              <div>
+                <div className="text-4xl sm:text-5xl font-black font-mono text-[#E11D48] tracking-tight">
+                  -34%
+                </div>
+                <div className="text-xs sm:text-sm font-bold text-[#F5F2EB] mt-1">
+                  Desigualdade Salarial
+                </div>
+                <p className="text-xs text-[#F5F2EB]/60 mt-1 leading-snug">
+                  Profissionais negros recebem menos mesmo com diploma superior na mesma função (IBGE).
+                </p>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold font-serif text-[#F5F2EB]">
-                2. O Dreno do Aluguel e a Desigualdade Salarial
-              </h3>
-
-              <p className="text-base text-[#F5F2EB]/80 leading-relaxed">
-                Expulsos dos centros urbanos nas reformas republicanas, os descendentes de Manuel gastam até <strong>metade da renda bruta</strong> apenas com moradia e condução periférica. Além disso, no setor privado corporativo, <strong>profissionais negros recebem em média 34% a menos</strong> que profissionais brancos exercendo o mesmo cargo (IBGE).
-              </p>
-
-              {/* Destaque com visual editorial sóbrio integrado (sem cartões de IA genéricos) */}
-              <div className="border-l-2 border-[#8E1010] pl-6 py-2 space-y-2">
-                <div className="text-xs font-mono font-bold tracking-widest uppercase text-[#FDA4AF]">
-                  Síntese Histórica
+              <div>
+                <div className="text-4xl sm:text-5xl font-black font-mono text-[#D97706] tracking-tight">
+                  50%
                 </div>
-                <p className="text-sm sm:text-base text-[#F5F2EB]/90 leading-relaxed">
-                  O auxílio público mata a fome do presente e a cota abre as portas da faculdade. Porém, sem <strong>reforma urbana, crédito para patrimônio próprio e equiparação salarial</strong>, a linha de chegada continuará a quilômetros de distância.
+                <div className="text-xs sm:text-sm font-bold text-[#F5F2EB] mt-1">
+                  Dreno com Moradia
+                </div>
+                <p className="text-xs text-[#F5F2EB]/60 mt-1 leading-snug">
+                  Sem casa própria herdada, metade do salário é drenada por aluguel e condução periférica.
                 </p>
               </div>
             </div>
 
+            {/* CONCLUSÃO DE 1 LINHA */}
+            <div className="border-l-2 border-[#D97706] pl-4 py-1 text-xs sm:text-sm text-[#F5F2EB]/80 leading-relaxed font-serif italic">
+              "A cota coloca na universidade, mas a herança zero mantém a linha de chegada a quilômetros de distância."
+            </div>
           </motion.div>
 
         </div>

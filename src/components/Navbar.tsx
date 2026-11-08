@@ -23,26 +23,29 @@ export default function Navbar({ activeEra, scrollToId }: NavbarProps) {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
           className="flex items-center gap-3 text-white font-serif font-black text-lg tracking-wider hover:opacity-80 transition-opacity"
         >
-          <svg className="w-8 h-8 rounded-lg shadow" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="navGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#F59E0B" />
-                <stop offset="100%" stopColor="#B45309" />
-              </linearGradient>
-              <linearGradient id="navBg" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#8E1010" />
-                <stop offset="100%" stopColor="#141838" />
-              </linearGradient>
-            </defs>
-            <rect width="90" height="90" x="5" y="5" rx="22" fill="url(#navBg)" stroke="#D97706" strokeWidth="2" strokeOpacity="0.4" />
-            <path d="M26 74 C 26 44, 42 26, 74 26" fill="none" stroke="url(#navGold)" strokeWidth="7" strokeLinecap="round" />
-            <path d="M26 50 C 44 50, 50 44, 74 44" fill="none" stroke="#F5F2EB" strokeOpacity="0.8" strokeWidth="4" strokeLinecap="round" />
-            <circle cx="26" cy="74" r="5" fill="#F59E0B" />
-            <circle cx="74" cy="26" r="5" fill="#F59E0B" />
-          </svg>
-          <span className="hidden sm:inline font-serif font-bold text-base text-[#F5F2EB] tracking-normal">
-            Fios da Memória
-          </span>
+          {/* Nova Logomarca: 4 A 0 Clara e Imponente */}
+          <div className="flex items-center gap-2.5">
+            <svg className="w-16 h-8" viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="nav4Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FDE68A" />
+                  <stop offset="60%" stopColor="#D97706" />
+                  <stop offset="100%" stopColor="#B45309" />
+                </linearGradient>
+                <linearGradient id="nav0Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFFFFF" />
+                  <stop offset="100%" stopColor="#D8D4CC" />
+                </linearGradient>
+              </defs>
+              <text x="38" y="60" fontFamily="'Cinzel', Georgia, serif" fontSize="62" fontWeight="900" fill="url(#nav4Grad)" textAnchor="middle">4</text>
+              <text x="80" y="46" fontFamily="'Space Grotesk', monospace" fontSize="14" fontWeight="700" fill="#D97706" fillOpacity="0.8" letterSpacing="3" textAnchor="middle">A</text>
+              <text x="122" y="60" fontFamily="'Cinzel', Georgia, serif" fontSize="62" fontWeight="900" fill="url(#nav0Grad)" textAnchor="middle">0</text>
+              <line x1="102" y1="42" x2="142" y2="42" stroke="#E11D48" strokeWidth="3" strokeLinecap="round" />
+            </svg>
+            <span className="hidden sm:inline font-serif font-black text-lg text-[#F5F2EB] tracking-wide">
+              Quatrocentos a Zero
+            </span>
+          </div>
         </button>
 
         {/* Links de navegação pelas eras */}

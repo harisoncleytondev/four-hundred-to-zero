@@ -24,6 +24,11 @@ dist-ssr
 *.sw?
 
 # Blender autosaves and backups
+*.blend
 *.blend1
 *_backup_*
+
+# Local design scratch
+design-systems/
+
 

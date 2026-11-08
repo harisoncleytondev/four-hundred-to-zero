@@ -85,19 +85,20 @@ export function Character3DStage({
   const haloRotate = scrollProgress * (isLeft ? 36 : -36) + transitionOffset * 35;
 
   return (
-    <div className="relative w-full h-[400px] sm:h-[540px] md:h-[640px] flex items-center justify-center">
-      {/* Círculo Editorial de Fundo com Pulsação Dinâmica no Zoom */}
+    <div className="relative w-full h-[320px] sm:h-[480px] md:h-[640px] flex items-center justify-center">
+      {/* Halo Editorial com profundidade luminosa */}
       <div
-        className="absolute w-[240px] h-[240px] sm:w-[350px] sm:h-[350px] md:w-[440px] md:h-[440px] rounded-full transition-colors duration-1000 shadow-[0_35px_100px_rgba(0,0,0,0.72)] pointer-events-none"
+        className="absolute w-[210px] h-[210px] sm:w-[320px] sm:h-[320px] md:w-[440px] md:h-[440px] rounded-full transition-all duration-1000 pointer-events-none"
         style={{
           backgroundColor: haloColor,
           transform: `scale(${haloScale})`,
+          boxShadow: `0 25px 60px -15px rgba(0,0,0,0.85), 0 0 40px -10px ${haloColor}40`,
         }}
       />
 
-      {/* Anel Orbital Animado no Scroll */}
+      {/* Anel de precisão cartográfica/editorial */}
       <div
-        className="absolute w-[260px] h-[260px] sm:w-[380px] sm:h-[380px] md:w-[480px] md:h-[480px] rounded-full border border-dashed border-white/25 pointer-events-none"
+        className="absolute w-[230px] h-[230px] sm:w-[350px] sm:h-[350px] md:w-[480px] md:h-[480px] rounded-full border border-[#F5F2EB]/20 pointer-events-none"
         style={{
           transform: `scale(${haloScale * 1.01}) rotate(${haloRotate}deg)`,
         }}

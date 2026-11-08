@@ -41,8 +41,10 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Cinzel"', '"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        serif: ['"Cinzel"', 'serif'],
+        reading: ['"Newsreader"', 'Georgia', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"Space Grotesk"', 'monospace'],
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',

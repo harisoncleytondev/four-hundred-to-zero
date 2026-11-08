@@ -23,12 +23,18 @@ dist-ssr
 *.sln
 *.sw?
 
-# Blender autosaves and backups
+# Blender autosaves, backups and scripts
 *.blend
 *.blend1
 *_backup_*
+*.py
+
+# Agent and skill metadata
+.agents/
+skills-lock.json
 
 # Local design scratch
 design-systems/
+
 
 

@@ -7,11 +7,8 @@ import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 // Cache-busting para garantir carregamento dos novos modelos corrigidos sem cache do navegador
 const MODEL_ASSET_VERSION = 'v_20261107_no_cuffs_v4';
 
-// Preload instantâneo dos 4 personagens para ficarem em cache imediato na memória
+// Pré-carrega prioritariamente o primeiro personagem da experiência imediata
 useGLTF.preload(`/models/tiao.glb?v=${MODEL_ASSET_VERSION}`);
-useGLTF.preload(`/models/benedita.glb?v=${MODEL_ASSET_VERSION}`);
-useGLTF.preload(`/models/manuel.glb?v=${MODEL_ASSET_VERSION}`);
-useGLTF.preload(`/models/camila.glb?v=${MODEL_ASSET_VERSION}`);
 
 interface MicroTextures {
   skinBump: THREE.CanvasTexture;

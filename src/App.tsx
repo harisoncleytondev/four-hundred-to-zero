@@ -234,45 +234,104 @@ export default function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Monitoramento nativo de Scroll Vertical para trocar as cores de fundo, animar transições e rotacionar os personagens 3D
+  // Monitoramento nativo de Scroll Vertical otimizado:
+  // Usa IntersectionObserver para visibilidade dos canvas 3D (evita 4 WebGL contexts ativos em mobile)
+  // e rAF com deduplicação de estado para evitar re-renders desnecessários a cada pixel
   useEffect(() => {
+    // 1. IntersectionObserver para controlar ativação dos WebGL Canvases
+    // Apenas renderiza Canvas se a seção estiver dentro ou próxima da viewport
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setVisibleEras((prev) => {
+          let hasChanged = false;
+          const next = { ...prev };
+          entries.forEach((entry) => {
+            const eraId = entry.target.getAttribute('data-era-id');
+            if (eraId) {
+              const isIntersecting = entry.isIntersecting;
+              if (next[eraId] !== isIntersecting) {
+                next[eraId] = isIntersecting;
+                hasChanged = true;
+              }
+            }
+          });
+          return hasChanged ? next : prev;
+        });
+      },
+      {
+        rootMargin: '250px 0px 250px 0px', // Prepara o canvas um pouco antes de entrar
+        threshold: 0.01,
+      }
+    );
+
+    eras.forEach((era) => {
+      const el = sectionRefs.current[era.id];
+      if (el) {
+        el.setAttribute('data-era-id', era.id);
+        observer.observe(el);
+      }
+    });
+
+    // 2. Scroll Handler com rAF e batching de setState
     let ticking = false;
+    let lastBg = eras[0].bgHex;
+
     const handleScroll = () => {
       if (ticking) return;
       ticking = true;
 
       requestAnimationFrame(() => {
         const vh = window.innerHeight;
-        const newProgress: Record<string, number> = {};
-        const newTransition: Record<string, number> = {};
-        const newVisible: Record<string, boolean> = {};
+        let candidateBg = lastBg;
 
-        eras.forEach((era) => {
-          const el = sectionRefs.current[era.id];
-          if (el) {
-            const rect = el.getBoundingClientRect();
-            const totalHeight = rect.height - vh;
-            const current = -rect.top;
-            const ratio = Math.max(0, Math.min(1, totalHeight > 0 ? current / totalHeight : 0));
-            newProgress[era.id] = ratio;
+        setEraProgress((prev) => {
+          let progressChanged = false;
+          const nextProgress = { ...prev };
 
-            // Mantém todos os modelos carregados na GPU para nunca descarregar e causar congelamento durante a rolagem
-            newVisible[era.id] = true;
+          setEraTransition((prevTrans) => {
+            let transChanged = false;
+            const nextTrans = { ...prevTrans };
 
-            // Calcula o estado de entrada (-1 -> 0) e saída (0 -> +1) entre um personagem e outro
-            if (rect.top > 0) {
-              newTransition[era.id] = -Math.min(1, rect.top / (vh * 0.85));
-            } else if (rect.bottom < vh) {
-              newTransition[era.id] = Math.min(1, (vh - rect.bottom) / (vh * 0.85));
-            } else {
-              newTransition[era.id] = 0;
-            }
+            eras.forEach((era) => {
+              const el = sectionRefs.current[era.id];
+              if (el) {
+                const rect = el.getBoundingClientRect();
+                const totalHeight = rect.height - vh;
+                const current = -rect.top;
+                const rawRatio = Math.max(0, Math.min(1, totalHeight > 0 ? current / totalHeight : 0));
+                // Arredonda levemente para 3 casas decimais para evitar thrashing de render
+                const ratio = Math.round(rawRatio * 1000) / 1000;
 
-            // Se a seção está ocupando o centro da tela, ativa a cor de fundo dela
-            if (rect.top <= vh * 0.48 && rect.bottom >= vh * 0.48) {
-              setActiveBg(era.bgHex);
-            }
-          }
+                if (Math.abs(nextProgress[era.id] - ratio) > 0.002) {
+                  nextProgress[era.id] = ratio;
+                  progressChanged = true;
+                }
+
+                // Transição de entrada (-1 -> 0) e saída (0 -> +1)
+                let transVal = 0;
+                if (rect.top > 0) {
+                  transVal = -Math.min(1, rect.top / (vh * 0.85));
+                } else if (rect.bottom < vh) {
+                  transVal = Math.min(1, (vh - rect.bottom) / (vh * 0.85));
+                }
+                transVal = Math.round(transVal * 1000) / 1000;
+
+                if (Math.abs(nextTrans[era.id] - transVal) > 0.003) {
+                  nextTrans[era.id] = transVal;
+                  transChanged = true;
+                }
+
+                // Se a seção está ocupando o centro da tela, seleciona a cor de fundo dela
+                if (rect.top <= vh * 0.48 && rect.bottom >= vh * 0.48) {
+                  candidateBg = era.bgHex;
+                }
+              }
+            });
+
+            return transChanged ? nextTrans : prevTrans;
+          });
+
+          return progressChanged ? nextProgress : prev;
         });
 
         // Se chegou na síntese final no rodapé
@@ -280,20 +339,26 @@ export default function App() {
         if (finalEl) {
           const rect = finalEl.getBoundingClientRect();
           if (rect.top <= vh * 0.5) {
-            setActiveBg('#0B0B0E');
+            candidateBg = '#0B0B0E';
           }
         }
 
-        setEraProgress((prev) => ({ ...prev, ...newProgress }));
-        setEraTransition((prev) => ({ ...prev, ...newTransition }));
-        setVisibleEras((prev) => ({ ...prev, ...newVisible }));
+        if (candidateBg !== lastBg) {
+          lastBg = candidateBg;
+          setActiveBg(candidateBg);
+        }
+
         ticking = false;
       });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   return (

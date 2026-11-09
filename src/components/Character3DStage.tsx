@@ -112,7 +112,7 @@ export function Character3DStage({
             frameloop="always"
             camera={{ position: [0, 0.12, 4.35], fov: 38 }}
             gl={{
-              antialias: true,
+              antialias: false,
               alpha: true,
               powerPreference: 'high-performance',
               toneMapping: THREE.ACESFilmicToneMapping,
@@ -142,7 +142,7 @@ export function Character3DStage({
                 scale={4.0}
                 blur={2.0}
                 far={2.0}
-                resolution={128}
+                resolution={64}
               />
             </Suspense>
           </Canvas>

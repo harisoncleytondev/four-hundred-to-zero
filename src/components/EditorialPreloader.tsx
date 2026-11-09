@@ -10,50 +10,69 @@ const MODEL_ASSETS = [
 
 export function EditorialPreloader({ onLoaded }: { onLoaded: () => void }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [progress, setProgress] = useState(5);
-  const [statusMessage, setStatusMessage] = useState('Desenhando Sebastião (Tião)...');
+  const [progress, setProgress] = useState(15);
+  const [statusMessage, setStatusMessage] = useState('Preparando Sebastião (Tião)...');
   const [isDone, setIsDone] = useState(false);
+  const [showSkip, setShowSkip] = useState(false);
+
+  const finishLoading = () => {
+    setIsDone(true);
+    setTimeout(() => {
+      onLoaded();
+    }, 400);
+  };
 
   useEffect(() => {
     let isMounted = true;
 
-    // Carregamento estritamente progressivo (um por um de verdade)
+    // Timeout de emergência: se a conexão do celular for 3G ou lenta, após 6s mostra botão de entrar
+    const skipTimer = setTimeout(() => {
+      if (isMounted) setShowSkip(true);
+    }, 4000);
+
+    // Timeout absoluto de segurança: nunca deixa o usuário preso mais de 8s mesmo em 2G
+    const maxSafetyTimer = setTimeout(() => {
+      if (isMounted && !isDone) {
+        finishLoading();
+      }
+    }, 8000);
+
     const loadProgressively = async () => {
-      const total = MODEL_ASSETS.length;
-
-      for (let i = 0; i < total; i++) {
-        if (!isMounted) return;
-
-        const currentAsset = MODEL_ASSETS[i];
-        setActiveStep(i);
-        setStatusMessage(`Desenhando ${currentAsset.name} (${currentAsset.year})...`);
-
-        try {
-          // Faz a requisição e consome os bytes reais progressivamente
-          const response = await fetch(currentAsset.url);
-          if (response.ok) {
-            await response.arrayBuffer();
-          }
-        } catch {
-          // Segue o fluxo caso haja cache ou falha pontual
-        }
-
-        // Garante um tempo visual de leitura de no mínimo 850ms por personagem
-        await new Promise((resolve) => setTimeout(resolve, 850));
-
-        if (!isMounted) return;
-        setProgress(Math.round(((i + 1) / total) * 100));
+      // 1. Carrega prioritariamente o primeiro modelo (Sebastião - 1835) para o usuário já poder ver a tela inicial
+      try {
+        const firstAsset = MODEL_ASSETS[0];
+        setActiveStep(0);
+        setStatusMessage(`Carregando ${firstAsset.name} (${firstAsset.year})...`);
+        const res = await fetch(firstAsset.url);
+        if (res.ok) await res.arrayBuffer();
+      } catch {
+        // Segue mesmo se der erro de rede
       }
 
       if (!isMounted) return;
-      setStatusMessage('Finalizando montagem do cenário...');
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      setProgress(50);
+      setActiveStep(1);
+
+      // Pequena pausa editorial suave
+      await new Promise((r) => setTimeout(r, 400));
+      if (!isMounted) return;
+
+      // 2. Os modelos seguintes são requisitados em background sem travar a tela
+      // Iniciamos o download em background dos outros 3
+      Promise.allSettled(
+        MODEL_ASSETS.slice(1).map((asset) =>
+          fetch(asset.url)
+            .then((r) => r.arrayBuffer())
+            .catch(() => {})
+        )
+      );
+
+      setProgress(100);
+      setStatusMessage('Pronto para explorar');
+      await new Promise((r) => setTimeout(r, 300));
 
       if (isMounted) {
-        setIsDone(true);
-        setTimeout(() => {
-          if (isMounted) onLoaded();
-        }, 750);
+        finishLoading();
       }
     };
 
@@ -61,6 +80,8 @@ export function EditorialPreloader({ onLoaded }: { onLoaded: () => void }) {
 
     return () => {
       isMounted = false;
+      clearTimeout(skipTimer);
+      clearTimeout(maxSafetyTimer);
     };
   }, [onLoaded]);
 
@@ -138,6 +159,17 @@ export function EditorialPreloader({ onLoaded }: { onLoaded: () => void }) {
 
           {/* Rodapé: A Linha do Tempo em 4 Estágios Progressivos */}
           <div className="relative z-10 w-full max-w-4xl mx-auto space-y-4">
+            {showSkip && (
+              <div className="flex justify-center pb-2">
+                <button
+                  type="button"
+                  onClick={finishLoading}
+                  className="px-4 py-1.5 rounded-full border border-[#D97706]/60 bg-[#D97706]/15 hover:bg-[#D97706]/25 text-[#F5F2EB] text-xs font-mono tracking-wider transition-all duration-300 animate-pulse"
+                >
+                  Entrar agora ➔
+                </button>
+              </div>
+            )}
             <div className="grid grid-cols-4 gap-2 sm:gap-3">
               {MODEL_ASSETS.map((asset, idx) => {
                 const isCompleted = idx < activeStep || (idx === activeStep && progress === 100);

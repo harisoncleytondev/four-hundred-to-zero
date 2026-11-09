@@ -26,9 +26,15 @@ const eras = [
     haloHex: '#D8D4CC',
     isLeft: true,
     statHighlight: {
-      value: 'R$ 0,00',
-      label: 'Sebastião trabalhou a vida inteira sem direito a receber salário ou deixar bens para a família.',
-      source: 'Código Criminal de 1830 e Inventários Cartorários do Vale do Paraíba (Arquivo Nacional)',
+      category: 'O que dava para pagar',
+      value: 'Nada',
+      items: [
+        { label: 'Salário pelo trabalho', value: 'Zero. Ele era escravizado' },
+        { label: 'Casa ou ferramentas', value: 'Nada. Ele era tratado como propriedade' },
+        { label: 'Moedas guardadas', value: 'Trocados escondidos na terra para tentar libertar a filha' },
+      ],
+      label: 'Sebastião não tinha direito a salário nem a posse de nada. Pela lei da época, ele mesmo era considerado um bem do fazendeiro.',
+      source: 'Código Criminal do Império (1830) e Inventários Cartorários do Vale do Paraíba (Arquivo Nacional)',
       url: 'https://www.gov.br/arquivonacional/pt-br',
     },
     blocks: [
@@ -66,9 +72,15 @@ const eras = [
     haloHex: '#D8D4CC',
     isLeft: false,
     statHighlight: {
-      value: '60%+',
-      label: 'Mais da metade das cartas de alforria exigiam pagamento em dinheiro ou anos extras de trabalho obrigatório.',
-      source: 'Estudo das Cartas de Alforria, Prof.ª Maria Helena Machado (USP)',
+      category: 'O que dava para pagar',
+      value: 'Só a comida do dia',
+      items: [
+        { label: 'Comida básica', value: 'Pagava farinha e fubá com a venda dos doces' },
+        { label: 'Taxa para trabalhar na rua', value: 'Pagava a licença da prefeitura para não ser presa' },
+        { label: 'Comprar um terreno', value: 'Impossível. A lei exigia muito dinheiro à vista' },
+      ],
+      label: 'Como quitandeira, Benedita conseguia dinheiro para comer no dia a dia, mas a Lei de Terras não permitia que pessoas pobres comprassem um pedaço de chão.',
+      source: 'Estudo das Cartas de Alforria e Mercado Urbano, Prof.ª Maria Helena Machado (USP)',
       url: 'https://historia.fflch.usp.br/docentes/mariahelena',
     },
     blocks: [
@@ -106,8 +118,14 @@ const eras = [
     haloHex: '#D8D4CC',
     isLeft: true,
     statHighlight: {
-      value: 'Zero',
-      label: 'Os libertos de 1888 não receberam terras, moradia ou escolas públicas do governo.',
+      category: 'O que dava para pagar',
+      value: 'A diária do trabalho braçal',
+      items: [
+        { label: 'Trabalho no cais', value: 'Recebia apenas a diária quando surgia navio para descarregar sacas de 60 kg' },
+        { label: 'Prato feito e café', value: 'Pagava o almoço nos botequins do porto' },
+        { label: 'Moradia no centro', value: 'Perdeu nos despejos e teve que subir o morro com sobras de madeira' },
+      ],
+      label: 'Como estivador avulso no porto, Manuel só recebia quando tinha navio atracado. O dinheiro mal pagava a comida e o quarto de cortiço, de onde acabou expulso nas reformas do Rio de Janeiro.',
       source: 'Lei Áurea (1888) e Relatórios da Primeira República, Arquivo Nacional',
       url: 'https://www.planalto.gov.br/ccivil_03/leis/lim/lim3353.htm',
     },
@@ -146,8 +164,14 @@ const eras = [
     haloHex: '#D8D4CC',
     isLeft: false,
     statHighlight: {
-      value: '-34%',
-      label: 'Profissionais negros com diploma universitário ganham em média um terço a menos do que profissionais brancos no mesmo nível.',
+      category: 'O que dá para pagar',
+      value: 'Contas do mês, mas sem casa própria',
+      items: [
+        { label: 'Faculdade e livros', value: 'Conseguiu estudar com cotas e bolsa' },
+        { label: 'Custos do dia a dia', value: 'Paga celular, transporte, mercado e contas' },
+        { label: 'Casa própria', value: 'Longe da realidade, porque o salário vai quase todo em aluguel' },
+      ],
+      label: 'Mesmo com faculdade e emprego formal, Camila não herdou imóveis da família. O salário ajuda a viver no presente, mas não sobra para construir patrimônio.',
       source: 'Pesquisa Nacional por Amostra de Domicílios Contínua, IBGE',
       url: 'https://www.ibge.gov.br/estatisticas/sociais/trabalho/9171-pesquisa-nacional-por-amostra-de-domicilios-continua-mensal.html',
     },
@@ -390,17 +414,28 @@ export default function App() {
                     era.isLeft ? 'md:order-1' : 'md:order-2'
                   }`}
                 >
-                  {/* Cabeçalho Editorial Compacto Acima do Personagem */}
-                  <div className="text-center mb-2 sm:mb-4 z-20 px-2">
-                    <div className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-[0.25em] sm:tracking-[0.28em] uppercase font-bold text-[#D97706] mb-1 opacity-90">
-                      <span>Época {era.number}</span>
-                      <span className="text-[#D97706]/40">•</span>
-                      <span>{era.year}</span>
+                  {/* Identidade do Personagem com Ano Imponente */}
+                  <div className="text-center mb-4 sm:mb-6 z-20 px-3 flex flex-col items-center">
+                    {/* Ano em Escala Monumental e Tipografia Serifada de Época */}
+                    <div className="relative flex items-center justify-center">
+                      <span className="font-serif font-black text-6xl sm:text-7xl md:text-8xl tracking-tight text-[#F5F2EB]/15 select-none leading-none absolute -top-8 sm:-top-10">
+                        {era.year}
+                      </span>
+                      <div className="relative flex items-center gap-3 px-4 py-1.5 rounded-full border border-[#D97706]/40 bg-black/40 backdrop-blur-md">
+                        <span className="text-[11px] font-mono tracking-[0.25em] uppercase text-[#D97706] font-semibold">
+                          Ato {era.number}
+                        </span>
+                        <span className="text-[#F5F2EB]/30">•</span>
+                        <span className="text-lg sm:text-xl font-serif font-black text-[#F5F2EB] tracking-wide">
+                          {era.year}
+                        </span>
+                      </div>
                     </div>
-                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-black font-serif tracking-tight text-[#F5F2EB] leading-tight drop-shadow-sm">
+
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-black font-serif tracking-tight text-[#F5F2EB] leading-tight drop-shadow-md mt-3 sm:mt-4">
                       {era.characterName}
                     </h2>
-                    <p className="text-xs sm:text-sm text-[#F5F2EB]/65 font-sans font-medium mt-1 max-w-sm mx-auto leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#F5F2EB]/70 font-sans font-medium mt-1 max-w-sm mx-auto leading-relaxed">
                       {era.characterSubtitle}
                     </p>
                   </div>
@@ -428,12 +463,14 @@ export default function App() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, amount: 0.15 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
-                    className="border-b border-[#F5F2EB]/20 pb-6 sm:pb-8"
+                    className="border-b border-[#F5F2EB]/15 pb-6 sm:pb-8"
                   >
-                    <span className="text-[11px] sm:text-xs font-mono tracking-[0.2em] text-[#D97706] font-semibold">
-                      Contexto Histórico • {era.year}
-                    </span>
-                    <h1 className="text-3xl sm:text-5xl md:text-6xl font-black font-serif text-[#F5F2EB] mt-2 sm:mt-3 leading-[1.1] sm:leading-[1.05] tracking-tight">
+                    <div className="flex items-center gap-3 mb-3 text-xs sm:text-sm font-mono tracking-widest text-[#D97706] uppercase">
+                      <span>Arquivo Histórico</span>
+                      <span className="w-8 h-[1px] bg-[#D97706]/40" />
+                      <span className="text-[#F5F2EB]/60 font-semibold">{era.year}</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-5xl md:text-6xl font-black font-serif text-[#F5F2EB] leading-[1.1] sm:leading-[1.05] tracking-tight">
                       {era.eraTitle}
                     </h1>
                   </motion.div>
@@ -484,44 +521,74 @@ export default function App() {
                     </motion.article>
                   ))}
 
-                  {/* Dado Estatístico com Efeito Suave */}
+                  {/* Bloco de Balanço Histórico: Poder de Compra na Época */}
                   <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, amount: 0.15 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
-                    className="pt-8 sm:pt-10 border-t border-[#F5F2EB]/20"
+                    className="relative mt-12 sm:mt-16 pt-8 border-t border-[#F5F2EB]/20"
                   >
-                    <div className="text-[10px] sm:text-xs font-mono font-semibold tracking-wider text-[#D97706] uppercase mb-1">
-                      Impacto Econômico Acumulado
+                    {/* Header do Balanço */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-[#D97706] rounded-full" />
+                        <span className="text-[11px] sm:text-xs font-mono tracking-[0.2em] uppercase font-semibold text-[#D97706]">
+                          {era.statHighlight.category || 'Poder de Compra na Época'}
+                        </span>
+                      </div>
+                      <span className="text-xs font-mono text-[#F5F2EB]/40">{era.year}</span>
                     </div>
-                    <div className="text-5xl sm:text-7xl font-black font-serif tracking-tight text-[#F5F2EB] my-1 sm:my-2 drop-shadow-md">
+
+                    {/* Veredito Econômico */}
+                    <div className="text-3xl sm:text-5xl md:text-6xl font-black font-serif tracking-tight text-[#F5F2EB] leading-[1.05] mb-6">
                       {era.statHighlight.value}
                     </div>
-                    <p className="text-sm sm:text-base md:text-lg font-reading italic text-[#F5F2EB]/80 leading-relaxed max-w-lg mt-2">
-                      {era.statHighlight.label}
-                    </p>
 
-                    {/* Fonte do dado estatístico Clicável */}
+                    {/* Lista Tipo Tabela Documental com Alto Contraste e Legibilidade */}
+                    {era.statHighlight.items && era.statHighlight.items.length > 0 && (
+                      <div className="space-y-0 divide-y divide-[#F5F2EB]/15 border-y border-[#F5F2EB]/20 my-6">
+                        {era.statHighlight.items.map((item, iIdx) => (
+                          <div
+                            key={iIdx}
+                            className="py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1.5 sm:gap-6 text-sm"
+                          >
+                            <span className="font-sans text-xs sm:text-sm font-bold uppercase tracking-wider text-[#F5F2EB] shrink-0">
+                              {item.label}:
+                            </span>
+                            <span className="font-reading text-base sm:text-lg text-[#F5F2EB] sm:text-right font-normal">
+                              {item.value}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Texto Reflexivo em Destaque Editorial */}
+                    <blockquote className="border-l-2 border-[#D97706] pl-4 sm:pl-5 my-5 text-sm sm:text-base font-reading italic text-[#F5F2EB]/85 leading-relaxed">
+                      "{era.statHighlight.label}"
+                    </blockquote>
+
+                    {/* Fonte Documental Limpa */}
                     {era.statHighlight.source && (
-                      <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-[#F5F2EB]/10 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono">
-                        <span className="text-[#D97706] font-bold">Fonte:</span>
+                      <div className="pt-3 flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-mono text-[#F5F2EB]/50">
+                        <span className="text-[#D97706] font-semibold">Fonte:</span>
                         {era.statHighlight.url ? (
                           <a
                             href={era.statHighlight.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#F5F2EB]/60 hover:text-[#D97706] underline underline-offset-4 decoration-[#D97706]/40 hover:decoration-[#D97706] transition-colors inline-flex items-center gap-1 break-words"
+                            className="hover:text-[#D97706] underline underline-offset-4 decoration-[#D97706]/40 hover:decoration-[#D97706] transition-colors inline-flex items-center gap-1.5"
                           >
                             <span>{era.statHighlight.source}</span>
-                            <svg className="w-3 h-3 opacity-70 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg className="w-3 h-3 opacity-60 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                               <polyline points="15 3 21 3 21 9" />
                               <line x1="10" y1="14" x2="21" y2="3" />
                             </svg>
                           </a>
                         ) : (
-                          <span className="text-[#F5F2EB]/50">{era.statHighlight.source}</span>
+                          <span>{era.statHighlight.source}</span>
                         )}
                       </div>
                     )}
@@ -557,16 +624,16 @@ export default function App() {
                 </svg>
 
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.92, y: 16 }}
+                  initial={{ opacity: 0, scale: 0.94, y: 16 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: false, amount: 0.4 }}
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                  className="-mt-16 sm:-mt-24 md:-mt-28 z-10 px-5 sm:px-8 py-3.5 sm:py-5 rounded-2xl bg-[#08090D]/90 backdrop-blur-xl border border-[#D97706]/40 text-center max-w-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] mx-4"
+                  className="-mt-16 sm:-mt-24 md:-mt-28 z-10 px-6 sm:px-10 py-5 sm:py-6 rounded-2xl bg-[#08090D]/95 backdrop-blur-xl border border-[#D97706]/50 text-center max-w-2xl shadow-[0_24px_60px_rgba(0,0,0,0.7)] mx-4"
                 >
-                  <div className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.22em] sm:tracking-[0.26em] uppercase text-[#D97706]/90">
+                  <div className="text-xs sm:text-sm font-mono font-bold tracking-[0.2em] sm:tracking-[0.24em] uppercase text-[#D97706]">
                     {bridge.fromYear} → {bridge.toYear} • {bridge.relation}
                   </div>
-                  <p className="text-xs sm:text-base font-serif font-bold text-[#F5F2EB] mt-1 sm:mt-1.5 leading-snug">
+                  <p className="text-base sm:text-xl md:text-2xl font-serif font-bold text-[#F5F2EB] mt-2 sm:mt-2.5 leading-snug">
                     {bridge.title}
                   </p>
                 </motion.div>
@@ -630,7 +697,7 @@ export default function App() {
               {/* Barra Famílias com Herança */}
               <div>
                 <div className="flex justify-between text-xs sm:text-sm font-reading font-medium mb-1.5 sm:mb-2">
-                  <span className="text-[#F5F2EB]">Famílias com Herança desde 1850</span>
+                  <span className="text-[#F5F2EB]">Famílias que herdaram bens e imóveis (com patrimônio)</span>
                   <span className="text-[#D97706] font-mono font-bold">100% Acúmulo</span>
                 </div>
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
